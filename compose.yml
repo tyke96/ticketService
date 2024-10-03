@@ -1,0 +1,20 @@
+services:
+  mariadb:
+    image: "mariadb:10.11"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: tickets
+      MYSQL_PASSWORD: tickets
+      MYSQL_DATABASE: tickets
+    volumes:
+      - ./createDb.sql:/docker-entrypoint-initdb.d/createDb.sql
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
